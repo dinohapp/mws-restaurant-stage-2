@@ -1,5 +1,3 @@
-import idb from 'idb';
-
 self.addEventListener('install', function(event) {
 	let cachedUrls = [
 		'/',

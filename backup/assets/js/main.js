@@ -3,7 +3,7 @@ let restaurants,
   cuisines;
 var map;
 var markers = [];
-//import * as DBHelper from 'dbhelper.js';
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */

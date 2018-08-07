@@ -17,11 +17,11 @@ class DBHelper {
    */
   static fetchRestaurants(callback) {
 
-
+    /**
 
 //TODO !Replace this XHR with fetch() API
 
-/*    let xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.open('GET', DBHelper.DATABASE_URL);
     xhr.onload = () => {
       if (xhr.status === 200) { // Got a success response from server!
@@ -35,8 +35,8 @@ class DBHelper {
         callback(error, null);
       }
     };
-    xhr.send();*/
-
+    xhr.send();
+    */
 
     fetch(`${DBHelper.DATABASE_URL}`)
     .then(function(response) {
