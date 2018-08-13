@@ -35,9 +35,9 @@ gulp.task('styles', function() {
 
 gulp.task('sw', function() {
 	return browserify('./assets/sw.js')
-		.transform(babelify, {presets: ['es2015']})
+		.transform(babelify, {presets: ['env']})
 		.bundle()
-		.pipe(vinyl_source('./assets/sw.js'))
+		.pipe(vinyl_source('sw.js'))
 		//.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./test'));
 });
@@ -49,7 +49,7 @@ gulp.task('images', function() {
 });
 
 
-/* gulp.task('js', function() {
+ gulp.task('js', function() {
 	var files = [
 		'dbhelper.js',
 		'main.js',
@@ -61,16 +61,18 @@ gulp.task('images', function() {
 		.transform(babelify, {presets: ['env']})
 		.bundle()
 		.pipe(vinyl_source(file))
-		.pipe(gulp.dest('./test/js'));
 		//.pipe(streamify(uglify()))
+		.pipe(gulp.dest('./test/js'));
+
 	};
 	jss(files[0]);
 	jss(files[1]);
 	jss(files[2]);
 });
-*/
+/*
 gulp.task('js', function() {
-		gulp.src('./assets/js/**/*.js')
+		gulp.src('./assets/js/*.js')
 		.pipe(babel({presets: ['env']}))
 		.pipe(gulp.dest('./test/js/'));
 });
+*/

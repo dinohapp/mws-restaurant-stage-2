@@ -195,3 +195,6 @@ class DBHelper {
   }
 
 }
+
+//export default DBHelper;
+//export {DBHelper};
