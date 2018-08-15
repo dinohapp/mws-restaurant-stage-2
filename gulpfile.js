@@ -56,7 +56,7 @@ gulp.task('images', function() {
 		'restaurant_info.js'
 			];
 	function jss(file) {
-		//return browserify('./assets/js/dbhelper.js', './assets/js/main.js', './assets/js/restaurant_info.js')
+//		return browserify('./assets/js/dbhelper.js', './assets/js/main.js', './assets/js/restaurant_info.js')
 		return browserify(`./assets/js/${file}`)
 		.transform(babelify, {presets: ['env']})
 		.bundle()

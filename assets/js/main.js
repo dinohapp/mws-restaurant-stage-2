@@ -3,14 +3,13 @@ let restaurants,
   cuisines;
 //var dbhelper = require('./dbhelper');
 //var DBHelper = new dbhelper;
-import * as dbhelper1 from './dbhelper.js';
+//import * as dbhelper1 from './dbhelper.js';
 //import {* as DBHelper} from './dbhelper.js';
 var map;
 var markers = [];
 
 
-var DBHelper = () => {};
-DBHelper = dbhelper1;
+var DBHelper = () => {
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -195,4 +194,5 @@ if (navigator.serviceWorker) {
     console.log('SW registration failed with error: ' + error);
     })
   });
+};
 };
