@@ -1,5 +1,5 @@
 var gulp = require('gulp'),
-	browserify = require('browserify'),
+	webpack = require('webpack-stream'),
 	vinyl_source = require('vinyl-source-stream'),
 	del = require('del'),
 	autoprefixer = require('gulp-autoprefixer'),
@@ -34,10 +34,12 @@ gulp.task('styles', function() {
 });
 
 gulp.task('sw', function() {
-	return browserify('./assets/sw.js')
-		.transform(babelify, {presets: ['env']})
-		.bundle()
-		.pipe(vinyl_source('sw.js'))
+		gulp.src([`./assets/sw.js`])
+		.pipe(webpack({
+			mode: 'development',
+			output: {filename: 'sw.js'}
+		}))
+//		.pipe(babel({presets: ['env']}))
 		//.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./test'));
 });
@@ -49,14 +51,13 @@ gulp.task('images', function() {
 });
 
 
- gulp.task('js', function() {
+/* gulp.task('js', function() {
 	var files = [
 		'dbhelper.js',
 		'main.js',
 		'restaurant_info.js'
 			];
 	function jss(file) {
-//		return browserify('./assets/js/dbhelper.js', './assets/js/main.js', './assets/js/restaurant_info.js')
 		return browserify(`./assets/js/${file}`)
 		.transform(babelify, {presets: ['env']})
 		.bundle()
@@ -69,10 +70,11 @@ gulp.task('images', function() {
 	jss(files[1]);
 	jss(files[2]);
 });
-/*
+*/
+
 gulp.task('js', function() {
 		gulp.src('./assets/js/*.js')
 		.pipe(babel({presets: ['env']}))
+//		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./test/js/'));
 });
-*/

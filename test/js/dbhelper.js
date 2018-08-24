@@ -1,4 +1,3 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -16,38 +15,42 @@ var DBHelper = function () {
   _createClass(DBHelper, null, [{
     key: 'fetchRestaurants',
 
-
     /**
      * Fetch all restaurants.
      */
-    value: function fetchRestaurants(callback) {
-
-      //TODO !Replace this XHR with fetch() API
-
-      /*    let xhr = new XMLHttpRequest();
-          xhr.open('GET', DBHelper.DATABASE_URL);
-          xhr.onload = () => {
-            if (xhr.status === 200) { // Got a success response from server!
-              const json = JSON.parse(xhr.responseText);
-              const restaurants = json.restaurants;
-      
-      //TODO !pass fech to this callback
-              callback(null, restaurants);
-            } else { // Oops!. Got an error from server.
-              const error = (`Request failed. Returned status of ${xhr.status}`);
-              callback(error, null);
-            }
-          };
-          xhr.send();*/
-
-      fetch('' + DBHelper.DATABASE_URL).then(function (response) {
-        return response.json();
-      }).then(function (info) {
-        callback(null, info);
+    value: function fetchRestaurants(callback, id) {
+      var fURL = void 0;
+      if (!id) {
+        fURL = DBHelper.DATABASE_URL;
+      } else {
+        fURL = DBHelper.DATABASE_URL + '/' + id;
+      }
+      fetch(fURL, { method: 'GET' }).then(function (response) {
+        response.json().then(function (restaurants) {
+          callback(null, restaurants);
+        });
       }).catch(function (error) {
         callback('Error, ' + error.statusText, null);
       });
     }
+
+    //TODO !Replace this XHR with fetch() API
+
+    /*    let xhr = new XMLHttpRequest();
+        xhr.open('GET', DBHelper.DATABASE_URL);
+        xhr.onload = () => {
+          if (xhr.status === 200) { // Got a success response from server!
+            const json = JSON.parse(xhr.responseText);
+            const restaurants = json.restaurants;
+    
+    //TODO !pass fech to this callback
+            callback(null, restaurants);
+          } else { // Oops!. Got an error from server.
+            const error = (`Request failed. Returned status of ${xhr.status}`);
+            callback(error, null);
+          }
+        };
+        xhr.send();*/
 
     /**
      * Fetch a restaurant by its ID.
@@ -72,7 +75,7 @@ var DBHelper = function () {
             callback('Restaurant does not exist', null);
           }
         }
-      });
+      }, id);
     }
 
     /**
@@ -262,5 +265,3 @@ var DBHelper = function () {
 
 //export default DBHelper;
 //export {DBHelper};
-
-},{}]},{},[1]);

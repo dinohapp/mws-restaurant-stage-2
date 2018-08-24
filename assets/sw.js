@@ -1,5 +1,92 @@
 import idb from 'idb';
 
+//IDB code goes here
+
+/****Boilerplate IDB code***
+	const dbPromise = idb.open('restaurants-db', 1, upgradeDB => {
+	let keyValStore = upgradeDB.createObjectStore('keyval');
+	keyValStore.put('world', 'hello');
+
+});
+
+dbPromise.then(db => {
+	const tx = db.transaction('keyval');
+	keyValStore = tx.objectStore('keyval');
+	return keyValStore.get('hello');
+}).then(val => {
+	console.log('the value of hello is', val)
+});
+
+dbPromise.then(db => {
+	const tx = db.transaction('keyval', 'readwrite');
+	const keyValStore = tx.objectStore('keyval');
+	keyValStore.put('bar', 'foo');
+	return tx.complete;
+}).then(() => {
+	console.log('added foo bar')
+});
+*/
+
+
+/*const dbPromise = idb.open('keyval-store', 1, upgradeDB => {
+  upgradeDB.createObjectStore('keyval');
+});
+
+const idbKeyval = {
+  get(key) {
+    return dbPromise.then(db => {
+      return db.transaction('keyval')
+        .objectStore('keyval').get(key);
+    });
+  },
+  set(key, val) {
+    return dbPromise.then(db => {
+      const tx = db.transaction('keyval', 'readwrite');
+      tx.objectStore('keyval').put(val, key);
+      return tx.complete;
+    });
+  },
+  delete(key) {
+    return dbPromise.then(db => {
+      const tx = db.transaction('keyval', 'readwrite');
+      tx.objectStore('keyval').delete(key);
+      return tx.complete;
+    });
+  },
+  clear() {
+    return dbPromise.then(db => {
+      const tx = db.transaction('keyval', 'readwrite');
+      tx.objectStore('keyval').clear();
+      return tx.complete;
+    });
+  },
+  keys() {
+    return dbPromise.then(db => {
+      const tx = db.transaction('keyval');
+      const keys = [];
+      const store = tx.objectStore('keyval');
+
+      // This would be store.getAllKeys(), but it isn't supported by Edge or Safari.
+      // openKeyCursor isn't supported by Safari, so we fall back
+      (store.iterateKeyCursor || store.iterateCursor).call(store, cursor => {
+        if (!cursor) return;
+        keys.push(cursor.key);
+        cursor.continue();
+      });
+
+      return tx.complete.then(() => keys);
+    });
+  }
+};
+*/
+function createDB() {
+const dbPromise = idb.open('restaurants', 1, upgradeDB =>{
+		var store = upgradeDB.createObjectStore('restaurants-cache', {
+			keyPath: 'id'
+		})
+	});
+};
+
 self.addEventListener('install', function(event) {
 	let cachedUrls = [
 		'/',
@@ -37,6 +124,11 @@ self.addEventListener('install', function(event) {
 	);
 });
 
+self.addEventListener('activate', event => {
+	event.waitUntil(
+		createDB()
+		);
+	});
 
 self.addEventListener('fetch', function(event) {
 	event.respondWith(

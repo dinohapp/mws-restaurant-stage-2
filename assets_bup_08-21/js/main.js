@@ -4,7 +4,7 @@ let restaurants,
 //var dbhelper = require('./dbhelper');
 //var DBHelper = new dbhelper;
 //import * as dbhelper1 from './dbhelper.js';
-//import * as DBHelper from './dbhelper.js';
+//import {* as DBHelper} from './dbhelper.js';
 var map;
 var markers = [];
 

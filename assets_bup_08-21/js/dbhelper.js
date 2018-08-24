@@ -31,7 +31,7 @@ class DBHelper {
     .catch(function(error) {
       callback(`Error, ${error.statusText}`, null)
     })
-  };
+  }
 
 
 
