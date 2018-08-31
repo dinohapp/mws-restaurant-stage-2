@@ -33,6 +33,9 @@ var DBHelper = function () {
         callback('Error, ' + error.statusText, null);
       });
     }
+  }, {
+    key: 'fetchRestaurantById',
+
 
     //TODO !Replace this XHR with fetch() API
 
@@ -55,18 +58,13 @@ var DBHelper = function () {
     /**
      * Fetch a restaurant by its ID.
      */
-
-  }, {
-    key: 'fetchRestaurantById',
     value: function fetchRestaurantById(id, callback) {
       // fetch all restaurants with proper error handling.
       DBHelper.fetchRestaurants(function (error, restaurants) {
         if (error) {
           callback(error, null);
         } else {
-          var restaurant = restaurants.find(function (r) {
-            return r.id == id;
-          });
+          var restaurant = restaurants;
           if (restaurant) {
             // Got the restaurant
             callback(null, restaurant);
