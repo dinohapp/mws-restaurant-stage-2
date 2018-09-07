@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	streamify = require('gulp-streamify');
 
-gulp.task('default', ['styles', 'html', 'js', 'images', 'sw']), function() {
+gulp.task('default', ['styles', 'html', 'js', 'images', 'sw', 'manifest']), function() {
 
 
 };
@@ -25,27 +25,32 @@ gulp.task('html', function() {
 		.pipe(gulp.dest('./test'));
 });
 
+gulp.task('manifest', function() {
+	gulp.src('./assets/manifest.json')
+		.pipe(gulp.dest('./test'));
+});
+
+//copy favicon.ico too
+
 gulp.task('styles', function() {
 	gulp.src('./assets/css/**/*.css')
 		.pipe(autoprefixer({browsers: ['last 2 versions']}))
 		.pipe(concat('styles.css'))
-		//.pipe(streamify(uglify()))
+//		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./test/css'));
 });
 
 gulp.task('sw', function() {
 		gulp.src([`./assets/sw.js`])
 		.pipe(webpack({
-			mode: 'development',
+			mode: 'production',
 			output: {filename: 'sw.js'}
 		}))
-//		.pipe(babel({presets: ['env']}))
-		//.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./test'));
 });
 
 gulp.task('images', function() {
-	gulp.src('./assets/img/**/*.jpg')
+	gulp.src('./assets/img/**/*.*')
 		//TODO imagemin, lazyload
 		.pipe(gulp.dest('./test/img'));
 });
@@ -75,6 +80,6 @@ gulp.task('images', function() {
 gulp.task('js', function() {
 		gulp.src('./assets/js/*.js')
 		.pipe(babel({presets: ['env']}))
-//		.pipe(streamify(uglify()))
+		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./test/js/'));
 });
