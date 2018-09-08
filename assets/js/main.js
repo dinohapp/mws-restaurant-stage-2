@@ -8,6 +8,17 @@ let restaurants,
 var map;
 var markers = [];
 
+/**
+ * Register service worker
+ */
+
+if (navigator.serviceWorker) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('../sw.js').catch(function(error) {
+    console.log('SW registration failed with error: ' + error);
+    })
+  });
+};
 
 //DBHelper = () => {};
 /**
@@ -145,7 +156,7 @@ const createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
 
   const image = document.createElement('img');
-  image.className = 'restaurant-img';
+  image.className = 'restaurant-img lazyload';
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
   image.alt = DBHelper.imageAltForRestaurant(restaurant);
   li.append(image);
@@ -184,15 +195,4 @@ const addMarkersToMap = (restaurants = self.restaurants) => {
   });
 }
 
-/**
- * Register service worker
- */
-
-if (navigator.serviceWorker) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('../sw.js').catch(function(error) {
-    console.log('SW registration failed with error: ' + error);
-    })
-  });
-};
 //};

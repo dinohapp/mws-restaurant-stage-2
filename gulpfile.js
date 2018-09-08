@@ -3,26 +3,32 @@ var gulp = require('gulp'),
 	vinyl_source = require('vinyl-source-stream'),
 	del = require('del'),
 	autoprefixer = require('gulp-autoprefixer'),
-	browserSync = require('browser-sync').create(),
 	babelify = require('babelify'),
 	babel = require('gulp-babel'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
-	streamify = require('gulp-streamify');
+	streamify = require('gulp-streamify'),
+	pump = require('pump'),
+	csso = require('gulp-csso'),
+	htmlmin = require('gulp-htmlmin');
 
-gulp.task('default', ['styles', 'html', 'js', 'images', 'sw', 'manifest']), function() {
+gulp.task('default', ['clean', 'css', 'html', 'js', 'images', 'sw', 'manifest']), function() {
 
 
 };
 
 
 gulp.task('clean', function() {
-	return del(['./test', './build']);
+	return del(['./test/**/*.*']);
 });
 
 gulp.task('html', function() {
 	gulp.src('./assets/*.html')
-		.pipe(gulp.dest('./test'));
+	.pipe(htmlmin({
+      collapseWhitespace: true,
+      removeComments: true
+    }))
+   	.pipe(gulp.dest('./test'));
 });
 
 gulp.task('manifest', function() {
@@ -32,11 +38,11 @@ gulp.task('manifest', function() {
 
 //copy favicon.ico too
 
-gulp.task('styles', function() {
+gulp.task('css', function() {
 	gulp.src('./assets/css/**/*.css')
 		.pipe(autoprefixer({browsers: ['last 2 versions']}))
+		.pipe(csso())
 		.pipe(concat('styles.css'))
-//		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./test/css'));
 });
 
@@ -51,7 +57,6 @@ gulp.task('sw', function() {
 
 gulp.task('images', function() {
 	gulp.src('./assets/img/**/*.*')
-		//TODO imagemin, lazyload
 		.pipe(gulp.dest('./test/img'));
 });
 
@@ -79,7 +84,13 @@ gulp.task('images', function() {
 
 gulp.task('js', function() {
 		gulp.src('./assets/js/*.js')
-		.pipe(babel({presets: ['env']}))
+		.pipe(babel({
+  			"presets": [
+    			["env", {
+      				"modules": false
+    				}]
+  				]
+			}))
 		.pipe(streamify(uglify()))
 		.pipe(gulp.dest('./test/js/'));
 });
