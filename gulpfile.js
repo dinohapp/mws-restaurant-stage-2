@@ -8,11 +8,10 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
 	streamify = require('gulp-streamify'),
-	pump = require('pump'),
 	csso = require('gulp-csso'),
 	htmlmin = require('gulp-htmlmin');
 
-gulp.task('default', ['clean', 'css', 'html', 'js', 'images', 'sw', 'manifest']), function() {
+gulp.task('default', ['clean', 'css', 'html', 'js', 'images', 'sw', 'manifest', 'favicon']), function() {
 
 
 };
@@ -36,7 +35,10 @@ gulp.task('manifest', function() {
 		.pipe(gulp.dest('./test'));
 });
 
-//copy favicon.ico too
+gulp.task('favicon', function() {
+	gulp.src('./assets/favicon.ico')
+		.pipe(gulp.dest('./test'));
+});
 
 gulp.task('css', function() {
 	gulp.src('./assets/css/**/*.css')
