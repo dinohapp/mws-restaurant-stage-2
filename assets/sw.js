@@ -89,6 +89,9 @@ const cachesHandler = event => {
       if (response) return response;
       return fetch(event.request)
       .then(resp => {
+      	if(!resp || resp.status !== 200 || resp.type !== 'basic') {
+      		return resp;
+      	}
       	return caches.open('v1').then(cache => {
       		cache.put(event.request, resp.clone())
       		return resp;
